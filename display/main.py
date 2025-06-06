@@ -48,10 +48,9 @@ led.set_rgb(0, 0, 0)
 class Screen:
     navigating_direction = 0
 
-    def __init__(self, display: PicoGraphics, current_index: int, index: int, total_screens: int) -> None:
+    def __init__(self, display: PicoGraphics, current_index: int, total_screens: int) -> None:
         self.display = display
         self.current_index = current_index
-        self.index = index
         self.total_screens = total_screens
 
     def set_current_index(self, index: int) -> None:
@@ -231,11 +230,11 @@ class ScreenController:
         self.display = display
         self.prev_button = prev_button
         self.next_button = next_button
-        self.sleep_screen = SleepScreen(display, 0, 0, 0)
+        self.sleep_screen = SleepScreen(display, 0, 0)
         self.screens = [
-            BatteryIndicator(display, self.current_screen, 0, 3),
-            LightsIndicator(display, self.current_screen, 1, 3),
-            WaterIndicator(display, self.current_screen, 2, 3)
+            BatteryIndicator(display, self.current_screen, 3),
+            LightsIndicator(display, self.current_screen, 3),
+            WaterIndicator(display, self.current_screen, 3)
         ]
         self.init_sleep_timer()
 
