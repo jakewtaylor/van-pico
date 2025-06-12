@@ -535,51 +535,22 @@ class MCP2515():
                     break
         self.WriteByte(CAN_RTS_TXB0)
 
-    def Receive(self, CAN_ID: int):
+    def Receive(self, CAN_ID: int) -> list[int] | None:
         self.WriteBytes(RXB0SIDH, (CAN_ID>>3)&0XFF)
         self.WriteBytes(RXB0SIDL, (CAN_ID&0x07)<<5)
         CAN_RX_Buf = []
-        while(1):
-            if(self.ReadByte(CANINTF) & 0x01):
-                len = self.ReadByte(RXB0DLC)
-                print(len)
-                for i in range(0, len): 
-                    CAN_RX_Buf.append(self.ReadByte(RXB0D0+i))
-                    # print(self.ReadByte(RXB0D0+i))
-                break
+        hasMessage = self.ReadByte(CANINTF) & 0x01
+
+        if (not hasMessage): return None
+
+        len = self.ReadByte(RXB0DLC)
+        print(len)
+        for i in range(0, len): 
+            CAN_RX_Buf.append(self.ReadByte(RXB0D0+i))
+            # print(self.ReadByte(RXB0D0+i))
 
         self.WriteBytes(CANINTF, 0)
         self.WriteBytes(CANINTE,0x01)#enable
         self.WriteBytes(RXB0SIDH,0x00)#clean
         self.WriteBytes(RXB0SIDL,0x60)
         return CAN_RX_Buf
-
-# if __name__ == '__main__':
-#     print("--------------------------------------------------------")
-#     can = MCP2515(
-#         spi_id = 1,
-#         sck = Pin(10),
-#         mosi = Pin(11),
-#         miso = Pin(12),
-#         cs_pin_number = 13
-#     )
-
-#     print("init...")
-#     can.Init()
-#     print("send data...")
-#     id = 0x123 #max 7ff
-#     data = [1, 2, 3, 4, 5, 6, 7, 8]
-#     dlc = 8
-#     can.Send(id, data, dlc)
-
-#     readbuf = []
-#     # while(1):
-#     while(1):
-#         readbuf = can.Receive(id)
-#         print(readbuf)
-#         time.sleep(0.5)
-
-#     print("--------------------------------------------------------")
-
-
-

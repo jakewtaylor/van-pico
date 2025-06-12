@@ -39,6 +39,7 @@ readbuf = []
 while True:
     screen_controller.tick()
     readbuf = can.Receive(id)
-    print("received: ", readbuf)
-    print("received: ", builder.parse_can_message(readbuf))
-    # time.sleep(0.5)
+
+    if readbuf is not None:
+        print("received: ", readbuf)
+        print("received: ", builder.parse_can_message(readbuf))
