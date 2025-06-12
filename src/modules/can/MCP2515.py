@@ -538,19 +538,17 @@ class MCP2515():
     def Receive(self, CAN_ID: int) -> list[int] | None:
         self.WriteBytes(RXB0SIDH, (CAN_ID>>3)&0XFF)
         self.WriteBytes(RXB0SIDL, (CAN_ID&0x07)<<5)
-        CAN_RX_Buf = []
-        hasMessage = self.ReadByte(CANINTF) & 0x01
 
-        if (not hasMessage): return None
+        has_msg = self.ReadByte(CANINTF) & 0x01
+        if not has_msg: return None
 
-        len = self.ReadByte(RXB0DLC)
-        print(len)
-        for i in range(0, len): 
-            CAN_RX_Buf.append(self.ReadByte(RXB0D0+i))
-            # print(self.ReadByte(RXB0D0+i))
+        message_length = self.ReadByte(RXB0DLC)
+        message = [self.ReadByte(RXB0D0 + x) for x in range(message_length)]
+        print(message_length)
 
         self.WriteBytes(CANINTF, 0)
         self.WriteBytes(CANINTE,0x01)#enable
         self.WriteBytes(RXB0SIDH,0x00)#clean
         self.WriteBytes(RXB0SIDL,0x60)
-        return CAN_RX_Buf
+
+        return message
