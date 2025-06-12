@@ -5,7 +5,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-echo "Uploading can test to" $1
+echo "Uploading display code to" $1
 
 # Clear the existing files on the device
 mpremote connect $1 \
@@ -16,4 +16,4 @@ mpremote connect $1 \
 # Copy the necessary files to the device
 mpremote connect $1 \
     + fs cp -r src/modules :lib/modules \
-    + fs cp src/main_can_sender_test.py :main.py
+    + fs cp src/main_display.py :main.py

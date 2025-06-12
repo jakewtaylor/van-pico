@@ -1,5 +1,5 @@
 import random
-from Screen import Screen, NAV_WIDTH, SCREEN_PAD
+from .Screen import Screen, NAV_WIDTH, SCREEN_PAD
 from math import ceil
 
 class WaterScreen(Screen):

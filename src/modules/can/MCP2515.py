@@ -471,7 +471,6 @@ class MCP2515():
         self.cs(1)
 
     def Init(self, speed="125KBPS"):
-        print("Reset")
         self.Reset()
         time.sleep(0.1)
             
@@ -545,7 +544,7 @@ class MCP2515():
                 len = self.ReadByte(RXB0DLC)
                 print(len)
                 for i in range(0, len): 
-                    CAN_RX_Buf.append(hex(self.ReadByte(RXB0D0+i)))
+                    CAN_RX_Buf.append(self.ReadByte(RXB0D0+i))
                     # print(self.ReadByte(RXB0D0+i))
                 break
 

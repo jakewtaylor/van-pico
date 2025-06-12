@@ -1,8 +1,11 @@
 from pimoroni import Button
 from pimoroni_bus import SPIBus
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY_2, PEN_RGB565
+from machine import Pin
+# import time
 
 from modules.display.ScreenController import ScreenController
+from modules.can.MCP2515 import MCP2515
 from modules.can.CANMessager import CANMessager
 
 a_btn = Button(12)
@@ -19,23 +22,23 @@ display = PicoGraphics(
 
 screen_controller = ScreenController(a_btn, b_btn, display)
 
-#can = MCP2515(
-#    spi_id = 0,
-#    sck = Pin(18),
-#    mosi = Pin(19),
-#    miso = Pin(16),
-#    cs_pin_number = 5
-#)
+can = MCP2515(
+   spi_id = 1,
+   sck = Pin(10),
+   mosi = Pin(11),
+   miso = Pin(8),
+   cs_pin_number = 9
+)
 
 builder = CANMessager()
 
 print("init...")
-#can.Init()
+can.Init()
 id = 0x123 #max 7ff
 readbuf = []
 while True:
     screen_controller.tick()
-    #readbuf = can.Receive(id)
-    #print("received: ", readbuf)
-    #print("received: ", builder.parse_can_message(readbuf))
-    #time.sleep(0.5)
+    readbuf = can.Receive(id)
+    print("received: ", readbuf)
+    print("received: ", builder.parse_can_message(readbuf))
+    # time.sleep(0.5)

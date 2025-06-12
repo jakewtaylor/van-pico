@@ -1,4 +1,4 @@
-from Screen import Screen
+from .Screen import Screen
 
 class LightsScreen(Screen):
     def draw(self):

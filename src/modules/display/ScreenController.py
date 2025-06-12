@@ -2,16 +2,16 @@ from picographics import PicoGraphics
 from pimoroni import Button
 from machine import Timer
 
-from Screen import Screen
-from SleepScreen import SleepScreen
-from BatteryScreen import BatteryScreen
-from LightsScreen import LightsScreen
-from WaterScreen import WaterScreen
+from .Screen import Screen
+from .SleepScreen import SleepScreen
+from .BatteryScreen import BatteryScreen
+from .LightsScreen import LightsScreen
+from .WaterScreen import WaterScreen
 
 SLEEP_TIMEOUT = 10_000 # 10 seconds
 
 class ScreenController:
-    _current_screen = 0
+    _current_screen = 2
     asleep = False
 
     @property
